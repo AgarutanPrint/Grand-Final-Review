@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Final Review: Verb Master Challenge! | Agarutan Print</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Verdana, Arial, sans-serif;
+    background: linear-gradient(160deg,#fdf2f8,#eef2ff);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px 12px;
+  }
+  .app {
+    width: 100%;
+    max-width: 480px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+    padding: 24px 20px;
+  }
+  .brand {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #9ca3af;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .quiz-title {
+    text-align: center;
+    font-size: 21px;
+    font-weight: 800;
+    color: #312e81;
+    margin: 0 0 4px 0;
+  }
+  .quiz-sub {
+    text-align: center;
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .section-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border: none;
+    background: #f8fafc;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1f2937;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.1s ease, box-shadow 0.15s ease;
+  }
+  .section-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+  .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .section-btn .emoji {
+    font-size: 18px;
+  }
+  .mastery-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    border: none;
+    background: linear-gradient(135deg, #7b1fa2, #4a148c);
+    color: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(123,31,162,0.35);
+  }
+  .mastery-btn:hover { transform: translateY(-1px); }
+
+  /* Quiz screen */
+  .quiz-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 15px;
+    color: #1f2937;
+  }
+  .exit-btn {
+    background: #fff0f0;
+    border: 2px solid #ef9a9a;
+    color: #c62828;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .exit-btn:hover {
+    background: #ef9a9a;
+    border-color: #c62828;
+    color: #b71c1c;
+  }
+  .stats-bar {
+    display: flex;
+    justify-content: space-between;
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 14px;
+  }
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.3s ease;
+  }
+  .question-text {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+  .hint-btn {
+    display: inline-block;
+    background: #fff7ed;
+    border: 2px solid #fdba74;
+    color: #c2410c;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-bottom: 14px;
+  }
+  .hint-text {
+    background: #fff7ed;
+    border-left: 4px solid #fdba74;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #7c2d12;
+    margin-bottom: 14px;
+  }
+  .option-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 13px 16px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1f2937;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: #a5b4fc;
+    background: #eef2ff;
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct {
+    background: #dcfce7;
+    border-color: #22c55e;
+    color: #166534;
+  }
+  .option-btn.wrong {
+    background: #fee2e2;
+    border-color: #ef4444;
+    color: #991b1b;
+  }
+  .feedback-banner {
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-weight: 700;
+    font-size: 14px;
+    margin: 14px 0;
+    display: none;
+  }
+  .feedback-banner.correct {
+    background: #dcfce7;
+    color: #166534;
+    display: block;
+  }
+  .feedback-banner.wrong {
+    background: #fee2e2;
+    color: #991b1b;
+    display: block;
+  }
+  .next-btn {
+    display: none;
+    width: 100%;
+    border: none;
+    color: #fff;
+    font-weight: 800;
+    font-size: 15px;
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  .next-btn.show { display: block; }
+
+  /* End screen */
+  .end-wrap { text-align: center; }
+  .trophy { font-size: 56px; margin-bottom: 4px; }
+  .tier-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #312e81;
+    margin-bottom: 6px;
+  }
+  .stars { font-size: 26px; margin-bottom: 10px; }
+  .star-pop {
+    display: inline-block;
+    opacity: 0;
+    transform: scale(0);
+    animation: pop 0.4s ease forwards;
+  }
+  @keyframes pop {
+    to { opacity: 1; transform: scale(1); }
+  }
+  .encourage-emoji { font-size: 48px; margin-bottom: 6px; }
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 16px 0;
+  }
+  .pill {
+    background: #eef2ff;
+    color: #312e81;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 999px;
+  }
+  .end-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .end-actions button {
+    flex: 1;
+    border: none;
+    border-radius: 12px;
+    padding: 13px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .btn-try { background: #312e81; color: #fff; }
+  .btn-menu { background: #e5e7eb; color: #1f2937; }
+
+  /* Review box */
+  .review-box {
+    margin-top: 22px;
+    background: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: 14px;
+    padding: 16px;
+    text-align: left;
+  }
+  .review-lock {
+    font-weight: 800;
+    font-size: 13px;
+    color: #4b5563;
+    margin-bottom: 10px;
+  }
+  .review-q {
+    font-weight: 800;
+    font-size: 15px;
+    color: #111827;
+    margin-bottom: 10px;
+  }
+  .review-p {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .review-btn {
+    display: block;
+    width: 100%;
+    background: #1a1a2e;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 8px;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="card" id="app-root"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- QUIZ DATA ----------
+  var SECTIONS = [
+    {
+      id: "multiplechoice",
+      title: "Multiple Choice Challenge",
+      emoji: "📝",
+      color: "#1e88e5",
+      colorLight: "#e3f2fd",
+      questions: [
+        { q: "Every morning, Grandpa ______ his garden.", options: ["waters","water","watered"], answer: "waters", hint: "Habit: \"every morning\" needs Simple Present." },
+        { q: "Look! Maya ______ a picture right now.", options: ["draw","draws","is drawing"], answer: "is drawing", hint: "\"Right now\" needs Present Continuous." },
+        { q: "Last summer, our family ______ to the beach.", options: ["drive","drove","drives"], answer: "drove", hint: "Finished action: \"last summer\" needs Simple Past." },
+        { q: "While Dad ______ dinner, the phone rang.", options: ["cooks","was cooking","will cook"], answer: "was cooking", hint: "Longer action interrupted by a shorter one: Past Continuous." },
+        { q: "Tomorrow, Leo ______ his new bike for the first time.", options: ["rides","rode","will ride"], answer: "will ride", hint: "Simple future prediction: \"tomorrow\"." },
+        { q: "This time next week, we ______ on a plane to visit our cousins.", options: ["fly","will be flying","flew"], answer: "will be flying", hint: "Action in progress at a specific future time." },
+        { q: "Bob ______ under the table when the storm started.", options: ["hides","was hiding","will hide"], answer: "was hiding", hint: "Action in progress, interrupted by \"the storm started\"." },
+        { q: "Maya usually ______ her homework before dinner.", options: ["finishes","finished","will finish"], answer: "finishes", hint: "Habit: \"usually\" needs Simple Present." },
+        { q: "______ you visit your grandparents last weekend?", options: ["Do","Did","Will"], answer: "Did", hint: "Simple Past question: \"last weekend\"." },
+        { q: "______ it snow this winter?", options: ["Do","Did","Will"], answer: "Will", hint: "Simple Future question about something not yet happened." }
+      ]
+    },
+    {
+      id: "tensedetective",
+      title: "Tense Detective",
+      emoji: "🕵️",
+      color: "#00897b",
+      colorLight: "#e0f2f1",
+      questions: [
+        { q: "\"The baker bakes fresh bread every morning.\" — What tense is this?", options: ["Simple Present","Present Continuous","Simple Past"], answer: "Simple Present", hint: "Habit: \"every morning\"." },
+        { q: "\"Listen! The baby is crying in the next room.\" — What tense is this?", options: ["Simple Present","Present Continuous","Past Continuous"], answer: "Present Continuous", hint: "Happening right now: \"Listen!\"" },
+        { q: "\"Sam broke his pencil during the math test.\" — What tense is this?", options: ["Simple Past","Past Continuous","Simple Present"], answer: "Simple Past", hint: "A finished action." },
+        { q: "\"We were building a blanket fort when the power went out.\" — What tense is this?", options: ["Past Continuous","Simple Past","Future Continuous"], answer: "Past Continuous", hint: "An action in progress, interrupted." },
+        { q: "\"Next Friday, our class will visit the zoo.\" — What tense is this?", options: ["Simple Future","Future Continuous","Simple Present"], answer: "Simple Future", hint: "A future plan/prediction." },
+        { q: "\"At noon tomorrow, Grandma will be arriving at the airport.\" — What tense is this?", options: ["Future Continuous","Simple Future","Present Continuous"], answer: "Future Continuous", hint: "Action in progress at a specific future time." },
+        { q: "\"The library closes at 8 PM every night.\" — What tense is this?", options: ["Simple Present","Present Continuous","Simple Future"], answer: "Simple Present", hint: "A routine fact: \"every night\"." },
+        { q: "\"Right now, the kids are cleaning up their toys.\" — What tense is this?", options: ["Present Continuous","Simple Present","Past Continuous"], answer: "Present Continuous", hint: "\"Right now\" signals an action happening currently." },
+        { q: "\"Yesterday, the wind blew the kite far away.\" — What tense is this?", options: ["Simple Past","Past Continuous","Simple Present"], answer: "Simple Past", hint: "A finished action: \"yesterday\"." },
+        { q: "\"I won't forget your birthday next month.\" — What tense is this?", options: ["Simple Future","Future Continuous","Simple Past"], answer: "Simple Future", hint: "A promise about the future." }
+      ]
+    },
+    {
+      id: "filltense",
+      title: "Fill in the Right Tense",
+      emoji: "✍️",
+      color: "#43a047",
+      colorLight: "#e8f5e9",
+      questions: [
+        { q: "Every Tuesday, Coach Diaz ______ practice after school. (run)", options: ["runs","ran","will run"], answer: "runs", hint: "Habit: \"every Tuesday\"." },
+        { q: "Right now, the twins ______ a puzzle together. (build)", options: ["are building","built","will build"], answer: "are building", hint: "\"Right now\" needs Present Continuous." },
+        { q: "Two nights ago, a strong wind ______ over our tent. (knock)", options: ["knocked","knocks","was knocking"], answer: "knocked", hint: "Finished action: \"two nights ago\"." },
+        { q: "While Grandpa ______, the cat curled up beside him. (nap)", options: ["was napping","naps","will nap"], answer: "was napping", hint: "Longer action interrupted by a shorter one." },
+        { q: "Next month, Aunt Sara ______ into her new house — it's already decided. (move)", options: ["is going to move","moved","moves"], answer: "is going to move", hint: "Already-decided plan." },
+        { q: "At 3 o'clock tomorrow, the whole team ______ for the big game. (practice)", options: ["will be practicing","practices","practiced"], answer: "will be practicing", hint: "Action in progress at a specific future moment." },
+        { q: "Look outside! Snow ______ already! (fall)", options: ["is falling","falls","fell"], answer: "is falling", hint: "Happening right now: \"Look!\"" },
+        { q: "Last Thursday, Ms. Patel ______ us a pop quiz. (give)", options: ["gave","gives","was giving"], answer: "gave", hint: "Finished action, irregular verb give → gave." },
+        { q: "I ______ your birthday — I promise! (not / forget)", options: ["won't forget","don't forget","wasn't forgetting"], answer: "won't forget", hint: "A future promise/negative." },
+        { q: "This time next week, I ______ on a beach somewhere sunny. (relax)", options: ["will be relaxing","relax","relaxed"], answer: "will be relaxing", hint: "Action in progress at a specific future time." }
+      ]
+    },
+    {
+      id: "fixmistakes",
+      title: "Fix the Mistakes",
+      emoji: "🔧",
+      color: "#fb8c00",
+      colorLight: "#fff3e0",
+      questions: [
+        { q: "Fix: \"The farmer feed his chickens every morning.\" What should the verb be?", options: ["feeds","feed","fed"], answer: "feeds", hint: "Singular subjects (he/she/it) need -s in Simple Present." },
+        { q: "Fix: \"Look! The kittens is playing with a ball of yarn.\" What should the helper verb be?", options: ["are","is","was"], answer: "are", hint: "Plural subjects need \"are\", not \"is\"." },
+        { q: "Fix: \"Yesterday, Grandma bringed us a basket of apples.\" What should the verb be?", options: ["brought","bringed","bring"], answer: "brought", hint: "\"Bring\" is irregular: bring → brought." },
+        { q: "Fix: \"While the storm was raged, we stayed inside.\" What should the verb be?", options: ["raging","raged","rage"], answer: "raging", hint: "Past Continuous needs verb-ing, not verb-ed." },
+        { q: "Fix: \"Next week, my cousin will visiting from another country.\" What should the verb be?", options: ["visit","visiting","visits"], answer: "visit", hint: "After \"will\", always use the base verb." },
+        { q: "Fix: \"This time tomorrow, we will be arrive at the campsite.\" What should the verb be?", options: ["arriving","arrive","arrived"], answer: "arriving", hint: "Future Continuous needs will + be + verb-ing." },
+        { q: "Fix: \"Did the movie started on time last night?\" What should the verb be?", options: ["start","started","starting"], answer: "start", hint: "After \"Did\", the verb resets to base form." },
+        { q: "Fix: \"She don't like spicy food.\" What should the helper be?", options: ["doesn't","don't","isn't"], answer: "doesn't", hint: "Singular subjects (he/she/it) need \"doesn't\"." },
+        { q: "Fix: \"We was walking to school when it began to rain.\" What should the helper be?", options: ["were","was","are"], answer: "were", hint: "Plural subjects (we/you/they) need \"were\"." },
+        { q: "Fix: \"I amn't going to the party tonight.\" What is the correct contraction?", options: ["I'm not","I amn't","I amn'"], answer: "I'm not", hint: "\"Amn't\" isn't a real contraction — use \"I'm not\"." }
+      ]
+    },
+    {
+      id: "mastery",
+      title: "Mastery Test: Verb Master Finale!",
+      emoji: "🏆",
+      color: "#7b1fa2",
+      colorLight: "#f3e5f5",
+      isMastery: true,
+      questions: [
+        { q: "Every Saturday, the Rivera family ______ the whole day at the community garden. (spend)", options: ["spends","spend","spent"], answer: "spends", hint: "Habit: \"every Saturday\" needs Simple Present." },
+        { q: "Last Saturday, while Mrs. Rivera ______ tomato seeds, her son Diego found a family of rabbits. (plant)", options: ["was planting","planted","plants"], answer: "was planting", hint: "The longer action in progress uses Past Continuous." },
+        { q: "Diego ______ a family of rabbits hiding near the fence! (find)", options: ["found","finds","was finding"], answer: "found", hint: "A finished, sudden action uses Simple Past." },
+        { q: "\"______ you see that?\" Diego shouted to his sister, Ana.", options: ["Do","Did","Will"], answer: "Did", hint: "A Simple Past question about that moment." },
+        { q: "Diego ______ to his sister, Ana. (shout)", options: ["shouted","shouts","was shouting"], answer: "shouted", hint: "A finished action uses Simple Past." },
+        { q: "Ana ______ over immediately. (run)", options: ["ran","runs","was running"], answer: "ran", hint: "A finished action, irregular verb run → ran." },
+        { q: "By the time she arrived, the rabbits ______ away into the bushes. (hop)", options: ["hopped","hop","were hopping"], answer: "hopped", hint: "A finished action uses Simple Past." },
+        { q: "Right now, the Rivera family ______ about building a rabbit-friendly corner. (talk)", options: ["is talking","talks","talked"], answer: "is talking", hint: "\"Right now\" needs Present Continuous." },
+        { q: "Next weekend, they ______ a little wooden shelter — the whole family already agreed on the plan! (build)", options: ["are going to build","will build","built"], answer: "are going to build", hint: "An already-decided plan uses going to." },
+        { q: "This time next month, Diego and Ana ______ baby rabbits play in their garden corner. (watch)", options: ["will be watching","watch","watched"], answer: "will be watching", hint: "Action in progress at a specific future time." }
+      ]
+    }
+  ];
+
+  // ---------- STATE ----------
+  var state = {
+    view: "menu",
+    sectionIndex: null,
+    qIndex: 0,
+    points: 0,
+    correct: 0,
+    wrong: 0,
+    hintUsed: false,
+    answered: false,
+    shuffledQuestions: [],
+    totalQuestions: 0
+  };
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function getUrlParam(name) {
+    var params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
+
+  var root = document.getElementById("app-root");
+
+  // ---------- MENU ----------
+  function renderMenu() {
+    state.view = "menu";
+    var html = '<div class="brand">Agarutan Print</div>';
+    html += '<div class="quiz-title">Grand Final Review</div>';
+    html += '<div class="quiz-sub">Verb Master Challenge! Present, Past &amp; Future — All Mixed Together</div>';
+
+    SECTIONS.forEach(function(sec, idx) {
+      if (sec.isMastery) return;
+      html += '<button class="section-btn" data-idx="' + idx + '">' +
+        '<span class="dot" style="background:' + sec.color + '"></span>' +
+        '<span class="emoji">' + sec.emoji + '</span>' +
+        '<span>' + sec.title + '</span>' +
+        '</button>';
+    });
+
+    var masteryIdx = SECTIONS.findIndex(function(s){ return s.isMastery; });
+    html += '<button class="mastery-btn" data-idx="' + masteryIdx + '">🏆 Mastery Test</button>';
+
+    root.innerHTML = html;
+
+    var btns = root.querySelectorAll(".section-btn, .mastery-btn");
+    btns.forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        var idx = parseInt(btn.getAttribute("data-idx"), 10);
+        startSection(idx);
+      });
+    });
+  }
+
+  function startSection(idx) {
+    state.sectionIndex = idx;
+    state.qIndex = 0;
+    state.points = 0;
+    state.correct = 0;
+    state.wrong = 0;
+    var sec = SECTIONS[idx];
+    state.shuffledQuestions = shuffle(sec.questions).map(function(q) {
+      return {
+        q: q.q,
+        hint: q.hint,
+        answer: q.answer,
+        options: shuffle(q.options)
+      };
+    });
+    state.totalQuestions = state.shuffledQuestions.length;
+    state.view = "quiz";
+    renderQuestion();
+  }
+
+  // ---------- QUIZ ----------
+  function renderQuestion() {
+    state.answered = false;
+    state.hintUsed = false;
+    var sec = SECTIONS[state.sectionIndex];
+    var qData = state.shuffledQuestions[state.qIndex];
+
+    var html = '';
+    html += '<div class="quiz-header">' +
+      '<div class="section-heading"><span class="dot" style="background:' + sec.color + '"></span>' +
+      '<span>' + sec.emoji + ' ' + sec.title + '</span></div>' +
+      '<button class="exit-btn" id="exit-btn">Exit</button>' +
+      '</div>';
+
+    html += '<div class="stats-bar">' +
+      '<span>⭐ ' + state.points + '</span>' +
+      '<span>✅ ' + state.correct + '</span>' +
+      '<span>❌ ' + state.wrong + '</span>' +
+      '<span>🎯 ' + calcScorePct() + '%</span>' +
+      '</div>';
+
+    var progressPct = Math.round((state.qIndex / state.totalQuestions) * 100);
+    html += '<div class="progress-track"><div class="progress-fill" style="width:' + progressPct + '%;background:' + sec.color + '"></div></div>';
+
+    html += '<div class="question-text">Q' + (state.qIndex + 1) + ' of ' + state.totalQuestions + ': ' + qData.q + '</div>';
+
+    html += '<button class="hint-btn" id="hint-btn">💡 Hint</button>';
+    html += '<div class="hint-text hidden" id="hint-text">' + qData.hint + '</div>';
+
+    qData.options.forEach(function(opt, i) {
+      html += '<button class="option-btn" data-opt="' + i + '">' + opt + '</button>';
+    });
+
+    html += '<div class="feedback-banner" id="feedback-banner"></div>';
+    html += '<button class="next-btn" id="next-btn" style="background:' + sec.color + '">Next</button>';
+
+    root.innerHTML = html;
+
+    document.getElementById("exit-btn").addEventListener("click", renderMenu);
+    document.getElementById("hint-btn").addEventListener("click", function() {
+      document.getElementById("hint-text").classList.remove("hidden");
+      state.hintUsed = true;
+    });
+
+    var optionBtns = root.querySelectorAll(".option-btn");
+    optionBtns.forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        if (state.answered) return;
+        state.answered = true;
+        var chosen = qData.options[parseInt(btn.getAttribute("data-opt"), 10)];
+        var isCorrect = chosen === qData.answer;
+        optionBtns.forEach(function(b) {
+          b.disabled = true;
+          var val = qData.options[parseInt(b.getAttribute("data-opt"), 10)];
+          if (val === qData.answer) b.classList.add("correct");
+          else if (b === btn) b.classList.add("wrong");
+        });
+        var feedback = document.getElementById("feedback-banner");
+        if (isCorrect) {
+          state.correct++;
+          state.points += state.hintUsed ? 5 : 10;
+          feedback.className = "feedback-banner correct";
+          feedback.textContent = "✅ Great job! That's correct!";
+        } else {
+          state.wrong++;
+          feedback.className = "feedback-banner wrong";
+          feedback.textContent = "❌ Not quite. The correct answer is: " + qData.answer;
+        }
+        var nextBtn = document.getElementById("next-btn");
+        nextBtn.classList.add("show");
+        nextBtn.textContent = (state.qIndex === state.totalQuestions - 1) ? "See Results" : "Next";
+        nextBtn.addEventListener("click", function handler() {
+          nextBtn.removeEventListener("click", handler);
+          if (state.qIndex < state.totalQuestions - 1) {
+            state.qIndex++;
+            renderQuestion();
+          } else {
+            renderEndScreen();
+          }
+        });
+      });
+    });
+  }
+
+  function calcScorePct() {
+    var total = state.correct + state.wrong;
+    if (total === 0) return 0;
+    return Math.round((state.correct / total) * 100);
+  }
+
+  // ---------- END SCREEN ----------
+  function renderEndScreen() {
+    var sec = SECTIONS[state.sectionIndex];
+    var pct = calcScorePct();
+    var html = '<div class="end-wrap">';
+
+    if (pct >= 70) {
+      var tier = pct === 100 ? "🏆 Spectacular" : (pct >= 85 ? "⭐ Excellent" : "🌟 Great Job");
+      html += '<div class="trophy">🏆</div>';
+      html += '<div class="tier-title">' + tier + '</div>';
+      html += '<div class="stars">';
+      for (var i = 0; i < 5; i++) {
+        html += '<span class="star-pop" style="animation-delay:' + (i * 0.12) + 's">⭐</span>';
+      }
+      html += '</div>';
+      html += '<div class="pills">' +
+        '<span class="pill">⭐ ' + state.points + ' pts</span>' +
+        '<span class="pill">✅ ' + state.correct + ' correct</span>' +
+        '<span class="pill">❌ ' + state.wrong + ' wrong</span>' +
+        '<span class="pill">🎯 ' + pct + '%</span>' +
+        '</div>';
+
+      if (sec.isMastery) {
+        html += renderReviewBox();
+      }
+    } else {
+      html += '<div class="encourage-emoji">💪</div>';
+      html += '<div class="tier-title">Keep Practicing!</div>';
+      html += '<div class="pills">' +
+        '<span class="pill">⭐ ' + state.points + ' pts</span>' +
+        '<span class="pill">✅ ' + state.correct + ' correct</span>' +
+        '<span class="pill">❌ ' + state.wrong + ' wrong</span>' +
+        '<span class="pill">🎯 ' + pct + '%</span>' +
+        '</div>';
+    }
+
+    html += '<div class="end-actions">' +
+      '<button class="btn-try" id="try-again">Try Again</button>' +
+      '<button class="btn-menu" id="back-menu">Menu</button>' +
+      '</div>';
+    html += '</div>';
+
+    root.innerHTML = html;
+
+    document.getElementById("try-again").addEventListener("click", function() {
+      startSection(state.sectionIndex);
+    });
+    document.getElementById("back-menu").addEventListener("click", renderMenu);
+  }
+
+  function renderReviewBox() {
+    var src = getUrlParam("src");
+    if (!src) return "";
+
+    var etsyUrl = "https://www.etsy.com/your/purchases";
+    var paperbackAsin = "";
+    var hardcoverAsin = "";
+
+    var buttons = "";
+    if (src === "etsy") {
+      buttons += '<a class="review-btn" href="' + etsyUrl + '" target="_blank" rel="noopener">Leave a Review on Etsy</a>';
+    } else if (src === "amazon") {
+      if (paperbackAsin) {
+        buttons += '<a class="review-btn" href="https://www.amazon.com/review/create-review?asin=' + paperbackAsin + '" target="_blank" rel="noopener">Review the Paperback</a>';
+      }
+      if (hardcoverAsin) {
+        buttons += '<a class="review-btn" href="https://www.amazon.com/review/create-review?asin=' + hardcoverAsin + '" target="_blank" rel="noopener">Review the Hardcover</a>';
+      }
+    }
+
+    if (!buttons) return "";
+
+    var html = '<div class="review-box">' +
+      '<div class="review-lock">🔒 Notice: For Parents &amp; Educators</div>' +
+      '<div class="review-q">How did you like this complete resource bundle?</div>' +
+      '<div class="review-p">Thank you for choosing Agarutan Print! We hope this combination of printable worksheets, the digital fillable PDF, and the interactive quiz bonus is helping to build your student\'s skills.</div>' +
+      '<div class="review-p">If this comprehensive resource bundle added value to your student\'s learning experience, please take a brief moment to share your feedback. Your review helps us continue creating high-quality learning assets!</div>' +
+      buttons +
+      '</div>';
+    return html;
+  }
+
+  renderMenu();
+})();
+</script>
+</body>
+</html>
